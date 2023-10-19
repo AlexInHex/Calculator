@@ -2,12 +2,20 @@ import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        try {
-            Scanner scanner = new Scanner(System.in);
-            System.out.println("Введите выражение (в формате 5 + 3 или V - II):");
-            String input = scanner.nextLine().trim(); //считываем строку и убираем пробелы покраям
-            scanner.close();
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Введите выражение (в формате 5 + 3 или V - II):");
+        String input = scanner.nextLine().trim(); //считываем строку и убираем пробелы покраям
+        scanner.close();
 
+        String res = calc(input);
+        System.out.println("Результат: " + res);
+    }
+
+    public static String calc (String input)
+    {
+        String answer = null;
+
+        try {
             String[] tokens = input.split(" "); //разделяем с помощью пробела операнды и оператор
             if (tokens.length != 3) // проверяем что введен верный формат выражения
                 throw new IllegalArgumentException("Неверный формат выражения");
@@ -31,6 +39,7 @@ public class Main {
 
             //сюда запишем результат
             int result = switch (operator) {
+                //выясняем операцию и производим вычисления. так же делаем проверку деления на ноль и на неверный символ операции.
                 case "+" -> operand1 + operand2;
                 case "-" -> operand1 - operand2;
                 case "*" -> operand1 * operand2;
@@ -42,15 +51,17 @@ public class Main {
                 default -> throw new IllegalArgumentException("Неверный оператор: " + operator);
             };
 
-            //выясняем операцию и производим вычисления. так же делаем проверку деления на ноль и на неверный символ операции.
 
-            //берем строковое представление результата и выводим в консоль
-            String output = isArabic ? String.valueOf(result) : ArabicToRoman(result); //и переводим в римские если нужно
-            System.out.println("Результат: " + output);
+            //берем строковое представление результата
+            answer = isArabic ? String.valueOf(result) : ArabicToRoman(result);
 
         } catch (Exception e) {
             System.err.println("Ошибка: " + e.getMessage());
         }
+
+        //проверяем действительно ли мы получили ответ.
+        return Objects.requireNonNullElse(answer, "Ошибка выполнения программы");
+
     }
 
     // проверка на систему счисления для арабских цифр
