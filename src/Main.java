@@ -5,7 +5,6 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите выражение (в формате 5 + 3 или V - II):");
         String input = scanner.nextLine().trim(); //считываем строку и убираем пробелы покраям
-        scanner.close();
 
         String res = calc(input);
         System.out.println("Результат: " + res);
@@ -37,6 +36,11 @@ public class Main {
             int operand1 = isArabic ? Integer.parseInt(num1) : RomanToArabic(num1);
             int operand2 = isArabic ? Integer.parseInt(num2) : RomanToArabic(num2);
 
+            if (isRoman & (operand1 < 0 || operand2 < 0) )
+            {
+                throw new IllegalArgumentException("Отрицательные значения не допускаются");
+            }
+
             //сюда запишем результат
             int result = switch (operator) {
                 //выясняем операцию и производим вычисления. так же делаем проверку деления на ноль и на неверный символ операции.
@@ -51,6 +55,10 @@ public class Main {
                 default -> throw new IllegalArgumentException("Неверный оператор: " + operator);
             };
 
+            if (isRoman & (result <= 0))
+            {
+                throw new IllegalArgumentException("Отрицательный или нулевой ответ не поддерживается римской системой счисления");
+            }
 
             //берем строковое представление результата
             answer = isArabic ? String.valueOf(result) : ArabicToRoman(result);
