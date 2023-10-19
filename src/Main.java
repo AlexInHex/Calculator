@@ -5,6 +5,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Введите выражение (в формате 5 + 3 или V - II):");
         String input = scanner.nextLine().trim(); //считываем строку и убираем пробелы покраям
+        scanner.close();
 
         String res = calc(input);
         System.out.println("Результат: " + res);
